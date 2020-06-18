@@ -45,60 +45,110 @@
         <div class="pictureBox">
           <div class="item-01 itemBox">
             <ul>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
+              <li>
+                <img :src="$imageURl+'9mm.jpg'" alt />
+              </li>
+              <li>
+                <img :src="$imageURl+'9Zy.jpg'" alt />
+              </li>
+              <li>
+                <img :src="$imageURl+'69E.jpg'" alt />
+              </li>
+              <li>
+                <img :src="$imageURl+'hw8.jpg'" alt />
+              </li>
             </ul>
           </div>
           <div class="item-02 itemBox">
             <ul>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
+              <li>
+                <img :src="$imageURl+'epE.jpg'" alt />
+              </li>
+              <li>
+                <img :src="$imageURl+'9Zy.jpg'" alt />
+              </li>
+              <li>
+                <img :src="$imageURl+'69E.jpg'" alt />
+              </li>
+              <li>
+                <img :src="$imageURl+'hw8.jpg'" alt />
+              </li>
             </ul>
           </div>
           <div class="item-03 itemBox">
             <ul>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
+              <li>
+                <img :src="$imageURl+'hVl.jpg'" alt />
+              </li>
+              <li>
+                <img :src="$imageURl+'9Zy.jpg'" alt />
+              </li>
+              <li>
+                <img :src="$imageURl+'69E.jpg'" alt />
+              </li>
+              <li>
+                <img :src="$imageURl+'hw8.jpg'" alt />
+              </li>
             </ul>
           </div>
           <div class="item-04 itemBox">
             <ul>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
+              <li>
+                <img :src="$imageURl+'untitled.png'" alt />
+              </li>
+              <li>
+                <img :src="$imageURl+'9Zy.jpg'" alt />
+              </li>
+              <li>
+                <img :src="$imageURl+'69E.jpg'" alt />
+              </li>
+              <li>
+                <img :src="$imageURl+'hw8.jpg'" alt />
+              </li>
             </ul>
           </div>
           <div class="item-05 itemBox">
             <ul>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
+              <li>
+                <img :src="$imageURl+'nJZ.jpg'" alt />
+              </li>
+              <li>
+                <img :src="$imageURl+'j8x.jpg'" alt />
+              </li>
+              <li>
+                <img :src="$imageURl+'69E.jpg'" alt />
+              </li>
+              <li>
+                <img :src="$imageURl+'hw8.jpg'" alt />
+              </li>
             </ul>
           </div>
           <div class="item-06 itemBox">
             <ul>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
+              <li>
+                <img :src="$imageURl+'ewy.jpg'" alt />
+              </li>
+              <li>
+                <img :src="$imageURl+'9Zy.jpg'" alt />
+              </li>
+              <li>
+                <img :src="$imageURl+'69E.jpg'" alt />
+              </li>
+              <li>
+                <img :src="$imageURl+'hw8.jpg'" alt />
+              </li>
             </ul>
           </div>
         </div>
       </div>
     </div>
+    <bottom-box />
   </div>
 </template>
 
 <script>
 import head from "@/pages/components/head.vue";
+import bottom from "@/pages/components/bottom.vue";
 export default {
   data() {
     return {
@@ -128,7 +178,8 @@ export default {
     this.getAllBanner();
   },
   components: {
-    headBox: head
+    headBox: head,
+    bottomBox: bottom
   }
 };
 </script>
@@ -281,10 +332,13 @@ export default {
         ul {
           display: flex;
           flex-direction: column;
-          li{
+          li {
             width: 100%;
-            height: 300px;
-            border: 1px solid #e3e3e3;
+            padding: 5px;
+            box-sizing: border-box;
+            img{
+              width: 100%;
+            }
           }
         }
       }

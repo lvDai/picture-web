@@ -151,6 +151,7 @@ export default {
         position: relative;
         height: 80px;
         width: 100px;
+        z-index: 99;
         text-align: center;
         cursor: pointer;
         ul {
