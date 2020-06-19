@@ -7,8 +7,13 @@
         </router-link>
       </div>
       <div class="searchBox" v-show="isSearchBox">
-        <input type="text" :placeholder="$t('lang.search')" />
-        <i class="iconfont">&#xe62f;</i>
+        <input
+          type="text"
+          v-model="searchData"
+          @keydown="searchContent"
+          :placeholder="$t('lang.search')"
+        />
+        <i class="iconfont" @click="searchContent">&#xe62f;</i>
       </div>
       <div class="headRight">
         <div class="login" v-if="!user.id">
@@ -45,7 +50,8 @@ export default {
       language: "中文",
       isLangList: false,
       user: { name: "", id: "" },
-      isSearchBox:false
+      isSearchBox: false,
+      searchData: ""
     };
   },
   created() {
@@ -84,8 +90,24 @@ export default {
     showIcon() {
       if (document.documentElement.scrollTop >= 500) {
         this.isSearchBox = true;
-      }else{
+      } else {
         this.isSearchBox = false;
+      }
+    },
+    // 点击搜索
+    searchContent(e) {
+      let searchData = this.searchData.replace(/(^\s*)|(\s*$)/g, "")
+      if (searchData.length) {
+        e = e || window.event;
+        if (e.keyCode) {
+          if (e.keyCode != 13) {
+            return;
+          }
+        }
+        this.$router.push({
+          path: "/search",
+          query: { data: searchData }
+        });
       }
     }
   }
@@ -133,7 +155,7 @@ export default {
         cursor: pointer;
       }
     }
-    .searchBox:hover input{
+    .searchBox:hover input {
       width: 400px;
     }
     .headRight {

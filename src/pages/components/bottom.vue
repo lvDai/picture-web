@@ -9,28 +9,28 @@
       <div class="typeTag">
         <ul>
           <li>
-            <router-link to>学术</router-link>
+            <router-link to="/search?tag=学术">学术</router-link>
           </li>
           <li>
-            <router-link to>校园</router-link>
+            <router-link to="/search?tag=校园">校园</router-link>
           </li>
           <li>
-            <router-link to>书院</router-link>
+            <router-link to="/search?tag=书院">书院</router-link>
           </li>
           <li>
-            <router-link to>活动</router-link>
+            <router-link to="/search?tag=活动">活动</router-link>
           </li>
           <li>
-            <router-link to>历史</router-link>
+            <router-link to="/search?tag=历史">历史</router-link>
           </li>
           <li>
-            <router-link to>学习</router-link>
+            <router-link to="/search?tag=学习">学习</router-link>
           </li>
           <li>
-            <router-link to>人物</router-link>
+            <router-link to="/search?tag=人物">人物</router-link>
           </li>
           <li>
-            <router-link to>其他</router-link>
+            <router-link to="/search?tag=其他">其他</router-link>
           </li>
         </ul>
       </div>

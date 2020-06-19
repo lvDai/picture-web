@@ -29,5 +29,8 @@ export const lang = {
     source: "图片来源",
     defaultPicture: "默认展示和可下载的图片为",
     submit: "提交",
-    confirm: "确定"
+    confirm: "确定",
+    searchResult: "搜索结果",
+    all: "总记录数",
+    backStageManagement: "后台管理"
 }

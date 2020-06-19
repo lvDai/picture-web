@@ -16,8 +16,8 @@
           </ul>
         </div>
         <div class="searchBox">
-          <input type="text" :placeholder="$t('lang.search')" />
-          <i class="iconfont">&#xe62f;</i>
+          <input @keydown="searchContent" v-model="searchData" type="text" :placeholder="$t('lang.search')" />
+          <i @click="searchContent" class="iconfont">&#xe62f;</i>
         </div>
         <div class="title">
           <h1>{{$t('lang.arrowWrap')}}</h1>
@@ -153,7 +153,8 @@ export default {
   data() {
     return {
       slideshowData: [],
-      switchoverRanking: 1
+      switchoverRanking: 1,
+      searchData:""
     };
   },
   methods: {
@@ -172,10 +173,31 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    // 点击搜索
+    searchContent(e) {
+      let searchData = this.searchData.replace(/(^\s*)|(\s*$)/g, "");
+      if (searchData.length) {
+        e = e || window.event;
+        if (e.keyCode) {
+          if (e.keyCode != 13) {
+            return;
+          }
+        }
+        this.$router.push({
+          path: "/search",
+          query: { data: searchData }
+        });
+      }
     }
   },
   created() {
     this.getAllBanner();
+    this.$request.get("/admin/a").then((result) => {
+      console.log(result);
+    }).catch((err) => {
+      console.log(err);
+    });
   },
   components: {
     headBox: head,
@@ -336,7 +358,7 @@ export default {
             width: 100%;
             padding: 5px;
             box-sizing: border-box;
-            img{
+            img {
               width: 100%;
             }
           }

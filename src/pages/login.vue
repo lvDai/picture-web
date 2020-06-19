@@ -27,6 +27,7 @@
 </template>
 <script>
 import head from "@/pages/components/head.vue";
+import { Loading } from "element-ui";
 export default {
   data() {
     return {
@@ -69,13 +70,15 @@ export default {
         userPasswordError.innerHTML = "密码长度不正确";
         return;
       }
-      this.userLogin(this.user);
+      let loadingInstance = Loading.service();
+      this.userLogin(this.user, loadingInstance);
     },
     // 发送用户登录信息 user(用户信息)
-    userLogin(user) {
+    userLogin(user, loadingInstance) {
       this.$request
         .post("/login", user)
         .then(result => {
+          loadingInstance.close();
           if (result.data.status == 1) {
             this.open({
               title: this.$t("lang.hint"),
@@ -93,6 +96,7 @@ export default {
           }
         })
         .catch(err => {
+          loadingInstance.close();
           console.log(err);
         });
     },

@@ -66,7 +66,6 @@
             :key="tag.name"
             closable
             @close="handleClose(tag)"
-            :type="tag.type"
           >{{tag.name}}</el-tag>
         </div>
       </div>
@@ -100,8 +99,8 @@ export default {
     return {
       user: { id: 0, name: "" },
       tags: [
-        { name: "标签一", type: "" },
-        { name: "标签二", type: "" }
+        { name: "标签一", id: 1 },
+        { name: "标签二", id: 2 }
       ],
       selectedTags: [],
       pictures: [],
@@ -195,6 +194,10 @@ export default {
       }
       let data = new FormData();
       data.append("pictures", JSON.stringify(this.pictures));
+      data.append("defaultDisplay", this.defaultDisplay);
+      data.append("textarea", this.textarea);
+      data.append("userId", this.user.id);
+      data.append("selectedTags", JSON.stringify(this.selectedTags));
       for (let i = 0; i < this.pictures.length; i++) {
         data.append("files", this.files[i], this.files[i].name);
       }
@@ -217,7 +220,7 @@ export default {
         .catch(err => {
           console.log(err);
           this.fullscreenLoading = false;
-          alert("上传失败")
+          alert("上传失败");
         });
     },
     // 提示 args提示内容
@@ -228,6 +231,12 @@ export default {
           this.fullscreenLoading = false;
         }
       });
+    },
+    // 清空已经上传的数据
+    emptyData(){
+      this.pictures.length = 0;
+      this.selectedTags.length = 0;
+      this.textarea = "";
     }
   }
 };

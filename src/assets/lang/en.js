@@ -29,5 +29,8 @@ export const lang = {
     source: "source of the picture ",
     defaultPicture: "The default display and downloadable images are",
     submit: "submit",
-    confirm: "confirm"
+    confirm: "confirm",
+    searchResult: "Search Result",
+    all: "The total number of records",
+    backStageManagement: "back-stage management"
 }
