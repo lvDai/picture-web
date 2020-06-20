@@ -7,23 +7,19 @@
       <left-navig />
       <div class="history">
         <div class="historyTitle">
-          <h1>历史记录:</h1>
+          <h1>浏览记录:</h1>
         </div>
         <div class="historyData">
           <ul>
-            <li class="iconfont">
-              <router-link to>用户</router-link>
-              <i class="iconfont" title="删除">&#xe61a;</i>
-            </li>
-            <li class="iconfont">
-              <router-link to>管理</router-link>
-              <i class="iconfont" title="删除">&#xe61a;</i>
+            <li class="iconfont" v-for="(item, index) in historys" :key="index">
+              <router-link :to="item.path">{{item.name}}</router-link>
+              <i class="iconfont" @click="removeHistory(index)" title="删除">&#xe61a;</i>
             </li>
           </ul>
         </div>
       </div>
       <div class="contentView">
-        <h1>aaa</h1>
+        <router-view></router-view>
       </div>
     </div>
   </div>
@@ -36,7 +32,7 @@ export default {
     return {
       pageShow: false,
       user: { id: "", name: "" },
-      historys:[]
+      historys: []
     };
   },
   created() {
@@ -52,7 +48,28 @@ export default {
         }
       }
     }
-    this.$router.go(-1);
+    this.$router.push({
+      path: "/admin/login"
+    });
+  },
+  watch: {
+    // 监听路由变化
+    $route(to, from) {
+      if (this.historys.length) {
+        for (let i = 0; i < this.historys.length; i++) {
+          if (this.historys[i].path == to.path) {
+            return;
+          }
+        }
+      }
+      this.historys.push({ path: to.path, name: to.name });
+    }
+  },
+  methods: {
+    // 删除历史标签
+    removeHistory(index){
+      this.historys.splice(index,1);
+    }
   },
   components: {
     topNavig,
@@ -86,6 +103,9 @@ export default {
             font-size: 13px;
             color: #666;
             transform: translate(0, -2px);
+          }
+          a.router-link-exact-active.router-link-active{
+            color: #409EFF;
           }
           i {
             position: absolute;

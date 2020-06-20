@@ -8,6 +8,11 @@ import newRelease from '@/pages/components/newRelease.vue'
 import continueRelease from '@/pages/components/continueRelease.vue'
 
 import adminHome from '@/pages/admin/index'
+
+import userData from '@/pages/admin/components/userData'
+import tags from '@/pages/admin/components/tags'
+import pictureData from '@/pages/admin/components/pictureData'
+
 import adminLogin from '@/pages/admin/login'
 
 Vue.use(Router)
@@ -35,9 +40,14 @@ export default new Router({
         name: 'search',
         component: search
     }, {
-        path: '/admin/',
+        path: '/admin',
         name: 'adminHome',
-        component: adminHome
+        component: adminHome,
+        children: [
+            { path: '/', name: "用户信息", component: userData },
+            { path: 'tags', name: "查看标签", component: tags },
+            { path: 'pictureData', name: "图片详情", component: pictureData },
+        ]
     }, {
         path: '/admin/login',
         name: 'adminLogin',

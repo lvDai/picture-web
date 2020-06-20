@@ -13,6 +13,7 @@
         <input
           type="password"
           v-model="user.password"
+          @keydown="carriage"
           :placeholder="$t('lang.loginUserPasswordHint')"
         />
         <i class="iconfont">&#xe60d;</i>
@@ -34,6 +35,13 @@ export default {
     };
   },
   methods: {
+    // 在密码框点击回车
+    carriage(e){
+      e = e || window.event;
+      if(e.keyCode==13){
+        this.isUserData();
+      }
+    },
     //   登录前验证用户信息
     isUserData() {
       if (!this.user.name) {

@@ -63,10 +63,10 @@
         <div class="selectedData">
           <el-tag
             v-for="tag in selectedTags"
-            :key="tag.name"
+            :key="tag.text"
             closable
             @close="handleClose(tag)"
-          >{{tag.name}}</el-tag>
+          >{{tag.text}}</el-tag>
         </div>
       </div>
       <div class="selectTag">
@@ -76,7 +76,7 @@
         <div class="selectTagData">
           <ul>
             <li v-for="(item, index) in tags" :key="index" @click="addTag(index)">
-              <el-tag>{{item.name}}</el-tag>
+              <el-tag>{{item.text}}</el-tag>
             </li>
           </ul>
         </div>
@@ -98,10 +98,7 @@ export default {
   data() {
     return {
       user: { id: 0, name: "" },
-      tags: [
-        { name: "标签一", id: 1 },
-        { name: "标签二", id: 2 }
-      ],
+      tags: [],
       selectedTags: [],
       pictures: [],
       textarea: "",
@@ -112,6 +109,7 @@ export default {
   },
   created() {
     this.initUser();
+    this.getAllTags();
   },
   methods: {
     //   获取用户信息
@@ -155,7 +153,7 @@ export default {
     addTag(index) {
       if (this.selectedTags.length) {
         for (let i = 0; i < this.selectedTags.length; i++) {
-          if (this.selectedTags[i].name == this.tags[index].name) {
+          if (this.selectedTags[i].text == this.tags[index].text) {
             return;
           }
         }
@@ -223,6 +221,21 @@ export default {
           alert("上传失败");
         });
     },
+    // 获取所有标签
+    getAllTags() {
+      this.$request
+        .get("/getAllTags")
+        .then(result => {
+          if(result.data.status == 1){
+            this.tags = result.data.data;
+          }else{
+            alert("获取标签失败");
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        });
+    },
     // 提示 args提示内容
     open(args) {
       this.$alert(args.content, args.title, {
@@ -233,7 +246,7 @@ export default {
       });
     },
     // 清空已经上传的数据
-    emptyData(){
+    emptyData() {
       this.pictures.length = 0;
       this.selectedTags.length = 0;
       this.textarea = "";
