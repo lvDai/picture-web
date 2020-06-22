@@ -12,6 +12,7 @@ import adminHome from '@/pages/admin/index'
 import userData from '@/pages/admin/components/userData'
 import tags from '@/pages/admin/components/tags'
 import pictureData from '@/pages/admin/components/pictureData'
+import noAuditPicture from '@/pages/admin/components/noAuditPicture'
 
 import adminLogin from '@/pages/admin/login'
 
@@ -46,7 +47,8 @@ export default new Router({
         children: [
             { path: '/', name: "用户信息", component: userData },
             { path: 'tags', name: "查看标签", component: tags },
-            { path: 'pictureData', name: "图片详情", component: pictureData },
+            { path: 'pictureData', name: "已审核图片", component: pictureData },
+            { path: 'noAuditPicture', name: "未审核图片", component: noAuditPicture },
         ]
     }, {
         path: '/admin/login',

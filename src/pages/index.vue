@@ -163,7 +163,6 @@ export default {
       this.$request
         .get("/getAllBanner")
         .then(result => {
-          console.log(result);
           if (result.data.status == 1) {
             this.slideshowData = result.data.data;
           } else {
@@ -193,11 +192,6 @@ export default {
   },
   created() {
     this.getAllBanner();
-    this.$request.get("/admin/a").then((result) => {
-      console.log(result);
-    }).catch((err) => {
-      console.log(err);
-    });
   },
   components: {
     headBox: head,

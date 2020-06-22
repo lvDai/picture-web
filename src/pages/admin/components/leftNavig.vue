@@ -30,7 +30,12 @@
           </template>
           <router-link to="/admin/pictureData">
             <el-menu-item-group>
-              <el-menu-item index="3-1">图片详情</el-menu-item>
+              <el-menu-item index="3-1">已审核图片</el-menu-item>
+            </el-menu-item-group>
+          </router-link>
+           <router-link to="/admin/noAuditPicture">
+            <el-menu-item-group>
+              <el-menu-item index="3-2">未审核图片</el-menu-item>
             </el-menu-item-group>
           </router-link>
         </el-submenu>

@@ -10,7 +10,12 @@
           <p>{{$t('lang.all')}}(123)</p>
         </div>
         <div class="searchBox">
-          <input type="text" @keydown="searchContent" v-model="searchData" :placeholder="$t('lang.search')" />
+          <input
+            type="text"
+            @keydown="searchContent"
+            v-model="searchData"
+            :placeholder="$t('lang.search')"
+          />
           <i @click="searchContent" class="iconfont">&#xe62f;</i>
         </div>
       </div>
@@ -152,6 +157,13 @@ export default {
           query: { data: searchData }
         });
       }
+    }
+  },
+  watch: {
+    $route: function(to, from) {
+      window.pageYOffset = 0;
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
     }
   },
   components: {

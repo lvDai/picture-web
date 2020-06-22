@@ -8,32 +8,12 @@
       <div class="lineWrap"></div>
       <div class="typeTag">
         <ul>
-          <li>
-            <router-link to="/search?tag=学术">学术</router-link>
-          </li>
-          <li>
-            <router-link to="/search?tag=校园">校园</router-link>
-          </li>
-          <li>
-            <router-link to="/search?tag=书院">书院</router-link>
-          </li>
-          <li>
-            <router-link to="/search?tag=活动">活动</router-link>
-          </li>
-          <li>
-            <router-link to="/search?tag=历史">历史</router-link>
-          </li>
-          <li>
-            <router-link to="/search?tag=学习">学习</router-link>
-          </li>
-          <li>
-            <router-link to="/search?tag=人物">人物</router-link>
-          </li>
-          <li>
-            <router-link to="/search?tag=其他">其他</router-link>
+          <li v-for="(item, index) in categoryData" :key="index">
+            <router-link :to="'/search?categoryId='+item.id">{{item.name}}</router-link>
           </li>
         </ul>
       </div>
+      <tagCloud style="width:100%" />
       <div class="footerLink">
         <div class="footerLinkBox">
           <div class="left">
@@ -61,7 +41,33 @@
   </div>
 </template>
 <script>
-export default {};
+import tagCloud from "@/pages/components/tagCloud.vue";
+export default {
+  data(){
+    return{
+      categoryData:[]
+    }
+  },
+  created(){
+    this.getAllCategory()
+  },
+  methods:{
+    getAllCategory(){
+      this.$request.get("/getAllCategory").then((result) => {
+        if(result.data.status == 1){
+          this.categoryData = result.data.data;
+        }else{
+          alert("获取类别失败");
+        }
+      }).catch((err) => {
+        console.log(err);
+      });
+    }
+  },
+  components: {
+    tagCloud
+  }
+};
 </script>
 <style lang="less" scoped>
 .bottom {

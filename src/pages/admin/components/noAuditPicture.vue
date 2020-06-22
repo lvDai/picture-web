@@ -1,15 +1,15 @@
 <template>
-  <div class="pictureData">
-    <div class="pictureBalar">
+  <div class="noAuditPicture">
+    <div class="noAuditPictureBox">
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column fixed prop="id" label="id" width="150"></el-table-column>
-        <el-table-column prop="publishTime" label="发布时间" width="260"></el-table-column>
-        <el-table-column prop="userId" label="作者id" width="160"></el-table-column>
-        <el-table-column prop="url" label="默认图片" width="260"></el-table-column>
+        <el-table-column prop="publishTime" label="发布时间" width="240"></el-table-column>
+        <el-table-column prop="userId" label="作者Id" width="120"></el-table-column>
+        <el-table-column prop="url" label="默认展示图片路径" width="300"></el-table-column>
         <el-table-column prop="source" label="来源"></el-table-column>
-        <el-table-column fixed="right" label="操作" width="120">
+        <el-table-column fixed="right" label="操作" width="240">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">查看详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -21,7 +21,7 @@
         :current-page.sync="currentPage"
         :page-size="10"
         layout="prev, pager, next, jumper"
-        :total="PictureAllPages"
+        :total="noPictureAllPages"
       ></el-pagination>
     </div>
     <div class="showDetails" @click="clickOutside" v-if="isPictureDetails">
@@ -73,6 +73,10 @@
             </ul>
           </div>
         </div>
+        <div class="button">
+          <el-button @click="approve">审核通过</el-button>
+          <el-button @click="defeated" type="danger">审核失败</el-button>
+        </div>
       </div>
     </div>
   </div>
@@ -83,23 +87,23 @@ export default {
     return {
       tableData: [],
       currentPage: 1,
-      PictureAllPages: 10,
-      pictureDetailsData: {},
+      noPictureAllPages: 10,
       isPictureDetails: false,
+      pictureDetailsData: { images: [] },
       pictureIndex: 0
     };
   },
   created() {
-    this.getPicturesPages(1, 10);
-    this.getAllAuditPictures();
+    this.getPagesNoAuditPictures(1, 10);
+    this.getAllNoAuditPictures();
   },
   methods: {
-    //   点击查看
-    handleClick(row) {
-      this.pictureIndex = this.tableData.indexOf(row);
+    // 点击查看详情
+    handleEdit(index, row) {
       this.isPictureDetails = true;
-      this.pictureDetailsData = row;
       this.getImages(row.id);
+      this.pictureDetailsData = row;
+      this.pictureIndex = index;
     },
     // 根据PictureId查询所有子类信息
     getImages(pictureId) {
@@ -120,10 +124,10 @@ export default {
           console.log(err);
         });
     },
-    // 请求图片
-    getPicturesPages(index, pages) {
+    // 获取未审核的图片
+    getPagesNoAuditPictures(index, pages) {
       this.$request
-        .get(`/admin/getPagesPicture?index=${index}&pages=${pages}`)
+        .get(`/admin/getPagesNoAuditPictures?index=${index}&pages=${pages}`)
         .then(result => {
           if (result.data.status == 1) {
             this.tableData = result.data.data;
@@ -132,26 +136,119 @@ export default {
               path: "/admin/login"
             });
           } else {
-            alert("获取已审核图片失败");
+            alert("获取未审核图片失败");
           }
         })
         .catch(err => {
           console.log(err);
         });
     },
-    // 请求总条数
-    getAllAuditPictures() {
+    // 提示
+    open(args, succeed = () => {}, cancel = () => {}) {
+      this.$confirm(args.content, args.title, {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: args.type
+      })
+        .then(() => {
+          succeed();
+        })
+        .catch(() => {
+          cancel();
+        });
+    },
+    // 审核通过
+    approve() {
+      if (this.pictureDetailsData.id) {
+        this.open(
+          {
+            content: "确定让此图片通过审核吗?",
+            titel: "提示",
+            type: "warning"
+          },
+          () => {
+            this.$request
+              .post("/admin/pictureApprove", { id: this.pictureDetailsData.id })
+              .then(result => {
+                this.isPictureDetails = false;
+                if (result.data.status == 1) {
+                  this.$message({
+                    type: "success",
+                    message: "成功!"
+                  });
+                  this.tableData.splice(this.pictureIndex, 1);
+                } else if (result.data.status == 406) {
+                  this.$router.push({
+                    path: "/admin/login"
+                  });
+                } else {
+                  alert("审核通过失败,服务器繁忙");
+                }
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          }
+        );
+      }
+    },
+    // 审核失败原因
+    defeatedCause(succeed = () => {}, cancel = () => {}) {
+      this.$prompt("请输入审核失败原因", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+        .then(({ value }) => {
+          succeed(value);
+        })
+        .catch(() => {
+          cancel();
+        });
+    },
+    // 审核失败
+    defeated() {
+      if (this.pictureDetailsData.id) {
+        this.defeatedCause(value => {
+          this.isPictureDetails = false;
+          this.$request
+            .post("/admin/auditDefeated", {
+              id: this.pictureDetailsData.id,
+              cause: value
+            })
+            .then(result => {
+              if (result.data.status == 1) {
+                this.$message({
+                  type: "success",
+                  message: "提交成功!"
+                });
+                this.tableData.splice(this.pictureIndex, 1);
+              } else if (result.data.status == 406) {
+                this.$router.push({
+                  path: "/admin/login"
+                });
+              } else {
+                alert("审核通过失败,服务器繁忙");
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        });
+      }
+    },
+    // 获取未审核的总条数
+    getAllNoAuditPictures() {
       this.$request
-        .get("/admin/getAllAuditPictures")
+        .get("/admin/getAllNoAuditPictures")
         .then(result => {
           if (result.data.status == 1) {
-            this.PictureAllPages = result.data.data[0].count;
+            this.noPictureAllPages = result.data.data[0].count;
           } else if (result.data.status == 406) {
             this.$router.push({
               path: "/admin/login"
             });
           } else {
-            alert("获取已审核图片失败");
+            alert("获取未审核图片数量失败");
           }
         })
         .catch(err => {
@@ -163,7 +260,7 @@ export default {
     },
     // 点击分页 val为第几页
     handleCurrentChange(val) {
-      this.getPicturesPages(val, 10);
+      this.getPagesNoAuditPictures(val, 10);
     },
     // 点击展示出来的详情页外围关闭详情页
     clickOutside(e) {

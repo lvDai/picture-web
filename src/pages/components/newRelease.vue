@@ -151,6 +151,10 @@ export default {
     },
     // 添加标签 index为标签的下标
     addTag(index) {
+      if(this.selectedTags.length>=6){
+        alert("最多选择6个标签")
+        return;
+      }
       if (this.selectedTags.length) {
         for (let i = 0; i < this.selectedTags.length; i++) {
           if (this.selectedTags[i].text == this.tags[index].text) {
@@ -210,6 +214,7 @@ export default {
           let confirm = this.$t("lang.confirm");
           if (result.data.status == 1) {
             this.open({ content: "上传成功", title: hint, confirm: confirm });
+            this.emptyData();
           } else {
             this.open({ content: "上传失败", title: hint, confirm: confirm });
           }
@@ -250,6 +255,7 @@ export default {
       this.pictures.length = 0;
       this.selectedTags.length = 0;
       this.textarea = "";
+      this.files.length = 0;
     }
   }
 };
