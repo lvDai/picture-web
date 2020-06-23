@@ -40,6 +40,14 @@
         <el-radio :label="index" v-for="(item, index) in pictures" :key="index">{{item.name}}</el-radio>
       </el-radio-group>
     </div>
+    <div class="category">
+      <div class="title">
+        <h1>{{$t('lang.category')}}:</h1>
+      </div>
+      <el-select v-model="categoryId" :placeholder="$t('lang.categoryHint')">
+        <el-option v-for="item in categoryData" :key="item.id" :label="item.name" :value="item.id"></el-option>
+      </el-select>
+    </div>
     <div class="PictureSource">
       <div class="title">
         <h1>{{$t('lang.source')}}:</h1>
@@ -47,7 +55,7 @@
       <div class="PictureSourceData">
         <el-input
           type="textarea"
-          placeholder="请输入内容"
+          :placeholder="$t('lang.sourceHint')"
           v-model="textarea"
           maxlength="64"
           show-word-limit
@@ -104,12 +112,15 @@ export default {
       textarea: "",
       defaultDisplay: 0,
       fullscreenLoading: false,
-      files: []
+      files: [],
+      categoryData: [],
+      categoryId: ""
     };
   },
   created() {
     this.initUser();
     this.getAllTags();
+    this.getAllCategory();
   },
   methods: {
     //   获取用户信息
@@ -119,6 +130,21 @@ export default {
     // 删除点击的标签
     handleClose(tag) {
       this.selectedTags.splice(this.selectedTags.indexOf(tag), 1);
+    },
+    // 获取所有分类
+    getAllCategory() {
+      this.$request
+        .get("/getAllCategory")
+        .then(result => {
+          if (result.data.status == 1) {
+            this.categoryData = result.data.data;
+          } else {
+            alert("获取类别失败");
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     // 获取要的上传图片，并展示
     uploadImg(e) {
@@ -132,9 +158,11 @@ export default {
               : size.toFixed(2) + "kb";
           let url = window.URL.createObjectURL(file);
           let name = file.name;
-          let pixel = "640*427";
           let suffix = name.substr(name.lastIndexOf(".") + 1);
-          this.pictures.push({ size, url, name, pixel, suffix });
+          this.getImgPixel(url).then(result => {
+            let pixel = result;
+            this.pictures.push({ size, url, name, pixel, suffix });
+          });
           this.files.push(file);
           EXIF.getData(file, function() {
             let data = EXIF.getAllTags(this);
@@ -144,6 +172,18 @@ export default {
         }
       }
     },
+    // 返回图片像素
+    getImgPixel(url) {
+      let pixel = "";
+      let img = new Image();
+      img.src = url;
+      return new Promise(resolve => {
+        img.onload = () => {
+          pixel = img.width + " * " + img.height;
+          resolve(pixel);
+        };
+      });
+    },
     // 删除要上传的图片 index第几张图片
     removePicture(index) {
       this.pictures.splice(index, 1);
@@ -151,8 +191,8 @@ export default {
     },
     // 添加标签 index为标签的下标
     addTag(index) {
-      if(this.selectedTags.length>=6){
-        alert("最多选择6个标签")
+      if (this.selectedTags.length >= 6) {
+        alert("最多选择6个标签");
         return;
       }
       if (this.selectedTags.length) {
@@ -183,6 +223,13 @@ export default {
           confirm: confirm
         });
         return;
+      } else if (!this.categoryId) {
+        this.open({
+          content: "请选择分类",
+          title: hint,
+          confirm: confirm
+        });
+        return;
       } else if (!this.selectedTags.length) {
         this.open({
           content: "至少需要选择一个标签",
@@ -198,6 +245,7 @@ export default {
       data.append("pictures", JSON.stringify(this.pictures));
       data.append("defaultDisplay", this.defaultDisplay);
       data.append("textarea", this.textarea);
+      data.append("categoryId", this.categoryId);
       data.append("userId", this.user.id);
       data.append("selectedTags", JSON.stringify(this.selectedTags));
       for (let i = 0; i < this.pictures.length; i++) {
@@ -231,14 +279,14 @@ export default {
       this.$request
         .get("/getAllTags")
         .then(result => {
-          if(result.data.status == 1){
+          if (result.data.status == 1) {
             this.tags = result.data.data;
-          }else{
+          } else {
             alert("获取标签失败");
           }
         })
         .catch(err => {
-          console.log(err)
+          console.log(err);
         });
     },
     // 提示 args提示内容
@@ -325,6 +373,12 @@ export default {
   }
   .defaultPicture {
     margin-top: 15px;
+  }
+  .category {
+    margin-top: 15px;
+    .title {
+      line-height: 40px;
+    }
   }
   .PictureSource {
     margin-top: 15px;

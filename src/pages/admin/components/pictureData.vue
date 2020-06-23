@@ -6,6 +6,7 @@
         <el-table-column prop="publishTime" label="发布时间" width="260"></el-table-column>
         <el-table-column prop="userId" label="作者id" width="160"></el-table-column>
         <el-table-column prop="url" label="默认图片" width="260"></el-table-column>
+        <el-table-column prop="categoryId" label="分类id" width="120"></el-table-column>
         <el-table-column prop="source" label="来源"></el-table-column>
         <el-table-column fixed="right" label="操作" width="120">
           <template slot-scope="scope">

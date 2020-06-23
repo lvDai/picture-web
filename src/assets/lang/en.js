@@ -32,5 +32,12 @@ export const lang = {
     confirm: "confirm",
     searchResult: "Search Result",
     all: "The total number of records",
-    backStageManagement: "back-stage management"
+    backStageManagement: "back-stage management",
+    category: "category",
+    sourceHint: "Please enter the image source",
+    categoryHint: "Please select category",
+    download: "download",
+    author: "author",
+    releaseDate: "Release Date",
+    downloadHint: "Download for CUHK faculty only"
 }

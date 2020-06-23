@@ -7,7 +7,7 @@
       <div class="title">
         <div class="searchNumber">
           <h1>{{$t('lang.searchResult')}}:</h1>
-          <p>{{$t('lang.all')}}(123)</p>
+          <p>{{$t('lang.all')}}({{pictureTotalData}})</p>
         </div>
         <div class="searchBox">
           <input
@@ -23,97 +23,67 @@
         <div class="pictureBox">
           <div class="item-01 itemBox">
             <ul>
-              <li>
-                <img :src="$imageURl+'9mm.jpg'" alt />
-              </li>
-              <li>
-                <img :src="$imageURl+'9Zy.jpg'" alt />
-              </li>
-              <li>
-                <img :src="$imageURl+'69E.jpg'" alt />
-              </li>
-              <li>
-                <img :src="$imageURl+'hw8.jpg'" alt />
+              <li
+                @click="clickPictureId = item.id"
+                v-for="(item, index) in pictureData['0']"
+                :key="index"
+              >
+                <img v-lazy="$imageURl+'b/'+item.url" alt />
               </li>
             </ul>
           </div>
           <div class="item-02 itemBox">
             <ul>
-              <li>
-                <img :src="$imageURl+'epE.jpg'" alt />
-              </li>
-              <li>
-                <img :src="$imageURl+'9Zy.jpg'" alt />
-              </li>
-              <li>
-                <img :src="$imageURl+'69E.jpg'" alt />
-              </li>
-              <li>
-                <img :src="$imageURl+'hw8.jpg'" alt />
+              <li
+                @click="clickPictureId = item.id"
+                v-for="(item, index) in pictureData['1']"
+                :key="index"
+              >
+                <img v-lazy="$imageURl+'b/'+item.url" alt />
               </li>
             </ul>
           </div>
           <div class="item-03 itemBox">
             <ul>
-              <li>
-                <img :src="$imageURl+'hVl.jpg'" alt />
-              </li>
-              <li>
-                <img :src="$imageURl+'9Zy.jpg'" alt />
-              </li>
-              <li>
-                <img :src="$imageURl+'69E.jpg'" alt />
-              </li>
-              <li>
-                <img :src="$imageURl+'hw8.jpg'" alt />
+              <li
+                @click="clickPictureId = item.id"
+                v-for="(item, index) in pictureData['2']"
+                :key="index"
+              >
+                <img v-lazy="$imageURl+'b/'+item.url" alt />
               </li>
             </ul>
           </div>
           <div class="item-04 itemBox">
             <ul>
-              <li>
-                <img :src="$imageURl+'untitled.png'" alt />
-              </li>
-              <li>
-                <img :src="$imageURl+'9Zy.jpg'" alt />
-              </li>
-              <li>
-                <img :src="$imageURl+'69E.jpg'" alt />
-              </li>
-              <li>
-                <img :src="$imageURl+'hw8.jpg'" alt />
+              <li
+                @click="clickPictureId = item.id"
+                v-for="(item, index) in pictureData['3']"
+                :key="index"
+              >
+                <img v-lazy="$imageURl+'b/'+item.url" alt />
               </li>
             </ul>
           </div>
           <div class="item-05 itemBox">
             <ul>
-              <li>
-                <img :src="$imageURl+'nJZ.jpg'" alt />
-              </li>
-              <li>
-                <img :src="$imageURl+'j8x.jpg'" alt />
-              </li>
-              <li>
-                <img :src="$imageURl+'69E.jpg'" alt />
-              </li>
-              <li>
-                <img :src="$imageURl+'hw8.jpg'" alt />
+              <li
+                @click="clickPictureId = item.id"
+                v-for="(item, index) in pictureData['4']"
+                :key="index"
+              >
+                <img v-lazy="$imageURl+'b/'+item.url" alt />
               </li>
             </ul>
           </div>
           <div class="item-06 itemBox">
             <ul>
-              <li>
-                <img :src="$imageURl+'ewy.jpg'" alt />
-              </li>
-              <li>
-                <img :src="$imageURl+'9Zy.jpg'" alt />
-              </li>
-              <li>
-                <img :src="$imageURl+'69E.jpg'" alt />
-              </li>
-              <li>
-                <img :src="$imageURl+'hw8.jpg'" alt />
+              <li
+                @click="clickPictureId = item.id"
+                v-for="(item, index) in pictureData['5']"
+                :key="index"
+              >
+                <img v-lazy="$imageURl+'b/'+item.url" alt />
               </li>
             </ul>
           </div>
@@ -123,25 +93,109 @@
     <div class="bottom">
       <bottom-box />
     </div>
+    <pictureDownload
+      v-if="clickPictureId"
+      v-on:closePages="closePages"
+      :pictureId="clickPictureId"
+    />
   </div>
 </template>
 <script>
 import head from "@/pages/components/head.vue";
 import bottom from "@/pages/components/bottom.vue";
+import pictureDownload from "@/pages/components/pictureDownload.vue";
 export default {
   data() {
     return {
-      searchData: ""
+      searchData: "",
+      pictureData: { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [] },
+      pictureTotalData: 0,
+      clickPictureId: 0
     };
   },
   created() {
-    if (this.$route.query.tag) {
-      this.searchData = this.$route.query.tag;
-    } else {
-      this.searchData = this.$route.query.data;
-    }
+    this.initSearchData();
   },
   methods: {
+    // 关闭图片详情页面
+    closePages() {
+      this.clickPictureId = 0;
+    },
+    // 初始化数据
+    initSearchData() {
+      if (this.$route.query.categoryId) {
+        this.getByCategoryId(this.$route.query.categoryId);
+      } else if (this.$route.query.data) {
+        this.searchData = this.$route.query.data;
+        this.getContentPictures(this.searchData);
+      } else {
+        this.getByTagIdPictures(this.$route.query.tagId);
+      }
+    },
+    // 根据分类搜索
+    getByCategoryId(id) {
+      this.pictureData["0"].length = 0;
+      this.pictureData["1"].length = 0;
+      this.pictureData["2"].length = 0;
+      this.pictureData["3"].length = 0;
+      this.pictureData["4"].length = 0;
+      this.pictureData["5"].length = 0;
+      this.$request
+        .get("/getByCategoryId?categoryId=" + id)
+        .then(result => {
+          if (result.data.status == 1) {
+            this.pictureTotalData = result.data.data.length;
+            for (let i = 0; i < result.data.data.length; i++) {
+              this.pictureData[i % 6].push(result.data.data[i]);
+            }
+          } else {
+            alert("搜索内容失败,服务器繁忙");
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    // 根据搜索的内容获取图片
+    getContentPictures(data) {
+      this.pictureData["0"].length = 0;
+      this.pictureData["1"].length = 0;
+      this.pictureData["2"].length = 0;
+      this.pictureData["3"].length = 0;
+      this.pictureData["4"].length = 0;
+      this.pictureData["5"].length = 0;
+      this.$request
+        .get("/getContentPictures?content=" + data)
+        .then(result => {
+          if (result.data.status == 1) {
+            this.pictureTotalData = result.data.data.length;
+            for (let i = 0; i < result.data.data.length; i++) {
+              this.pictureData[i % 6].push(result.data.data[i]);
+            }
+          } else {
+            alert("搜索内容失败,服务器繁忙");
+          }
+        })
+        .catch(err => {});
+    },
+    // 根据标签搜索
+    getByTagIdPictures(id) {
+      this.$request
+        .get("/getByTagIdPictures?id=" + id)
+        .then(result => {
+          if (result.data.status == 1) {
+            this.pictureTotalData = result.data.data.length;
+            for (let i = 0; i < result.data.data.length; i++) {
+              this.pictureData[i % 5].push(result.data.data[i]);
+            }
+          } else {
+            alert("搜索内容失败,服务器繁忙");
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     // 点击搜索
     searchContent(e) {
       let searchData = this.searchData.replace(/(^\s*)|(\s*$)/g, "");
@@ -160,7 +214,8 @@ export default {
     }
   },
   watch: {
-    $route: function(to, from) {
+    $route(to, from) {
+      this.initSearchData();
       window.pageYOffset = 0;
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
@@ -168,7 +223,8 @@ export default {
   },
   components: {
     headBox: head,
-    bottomBox: bottom
+    bottomBox: bottom,
+    pictureDownload
   }
 };
 </script>
@@ -230,6 +286,7 @@ export default {
               width: 100%;
               padding: 5px;
               box-sizing: border-box;
+              cursor: pointer;
               img {
                 width: 100%;
               }

@@ -8,11 +8,18 @@ import request from './assets/js/request'
 import utility from './assets/js//utility'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import VueLazyLoad from 'vue-lazyload'
 
-const imageURl = "http://127.0.0.1/"
+
+const imageURl = "http://192.168.31.17/"
 
 Vue.use(ElementUI);
 Vue.use(VueI18n);
+
+Vue.use(VueLazyLoad, {
+    error: imageURl + "timg.gif", //报错需要的图片
+    loading: imageURl + "timg.gif" // 替换需要的图片
+})
 Vue.config.productionTip = false;
 Vue.prototype.$request = request
 Vue.prototype.$imageURl = imageURl;

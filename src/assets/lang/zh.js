@@ -32,5 +32,12 @@ export const lang = {
     confirm: "确定",
     searchResult: "搜索结果",
     all: "总记录数",
-    backStageManagement: "后台管理"
+    backStageManagement: "后台管理",
+    category: "分类",
+    sourceHint: "请输入图片来源",
+    categoryHint: "请选择分类",
+    download: "下载",
+    author: "作者",
+    releaseDate: "发布日期",
+    downloadHint: "只供中大教员下载"
 }

@@ -1,11 +1,7 @@
 <template>
   <div>
     <div class="leftNavigBox">
-      <el-menu
-        class="el-menu-vertical-demo"
-        @open="handleOpen"
-        @close="handleClose"
-      >
+      <el-menu class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose">
         <el-submenu index="1">
           <template slot="title">
             <i class="el-icon-location"></i>
@@ -23,7 +19,7 @@
             <span slot="title">标签管理</span>
           </el-menu-item>
         </router-link>
-             <el-submenu index="3">
+        <el-submenu index="3">
           <template slot="title">
             <i class="el-icon-s-promotion"></i>
             <span slot="title">图片管理</span>
@@ -33,9 +29,20 @@
               <el-menu-item index="3-1">已审核图片</el-menu-item>
             </el-menu-item-group>
           </router-link>
-           <router-link to="/admin/noAuditPicture">
+          <router-link to="/admin/noAuditPicture">
             <el-menu-item-group>
               <el-menu-item index="3-2">未审核图片</el-menu-item>
+            </el-menu-item-group>
+          </router-link>
+        </el-submenu>
+         <el-submenu index="4">
+          <template slot="title">
+            <i class="el-icon-menu"></i>
+            <span slot="title">分类管理</span>
+          </template>
+          <router-link to="/admin/category">
+            <el-menu-item-group>
+              <el-menu-item index="4-1">查看分类</el-menu-item>
             </el-menu-item-group>
           </router-link>
         </el-submenu>

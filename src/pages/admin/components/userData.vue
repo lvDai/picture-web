@@ -4,6 +4,7 @@
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column prop="id" label="id" width="180"></el-table-column>
         <el-table-column prop="name" label="用户名" width="240"></el-table-column>
+        <el-table-column prop="jurisdiction" label="权限(1为普通用户,2为教师)" width="240"></el-table-column>
         <el-table-column prop="status" label="状态(0为不正常1为正常)"></el-table-column>
         <el-table-column label="操作" width="240">
           <template slot-scope="scope">
@@ -46,6 +47,10 @@ export default {
         .then(result => {
           if (result.data.status == 1) {
             this.tableData = result.data.data;
+          } else if (result.data.status == 406) {
+            this.$router.push({
+              path: "/admin/login"
+            });
           } else {
             alert("获取user信息错误");
           }

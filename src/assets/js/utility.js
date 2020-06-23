@@ -55,6 +55,18 @@ function clearCookie() {
     }
 }
 
+// 转换数据库获取到的时间
+function timeFormatter(value, format = "yyyy-mm-dd") { //author: meizz   
+    let da = new Date(value);
+    let formatData = "";
+    if (format == "yyyy-mm-dd") {
+        formatData = da.getFullYear() + "-" + (da.getMonth() + 1) + "-" + da.getDate();
+    } else {
+        formatData = da.getFullYear() + "-" + (da.getMonth() + 1) + "-" + da.getDate() + " " + da.getHours() + ":" + da.getMinutes() + ":" + da.getSeconds();
+    }
+    return formatData;
+}
+
 function loading() {
 
 }
@@ -65,5 +77,6 @@ export default {
     setCookie,
     getCookie,
     delCookie,
-    clearCookie
+    clearCookie,
+    timeFormatter
 }

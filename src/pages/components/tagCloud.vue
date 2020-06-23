@@ -71,7 +71,7 @@ export default {
         tag.x = this.CX + this.RADIUS * Math.sin(a) * Math.cos(b); //根据标签角度求出标签的x,y,z坐标
         tag.y = this.CY + this.RADIUS * Math.sin(a) * Math.sin(b);
         tag.z = this.RADIUS * Math.cos(a);
-        tag.href = this.$imageURl + "search?tag=" + data[i].id; //给标签添加链接
+        tag.href = "/search?tagId=" + data[i].id; //给标签添加链接
         tags.push(tag);
       }
       this.tags = tags; //让vue替我们完成视图更新

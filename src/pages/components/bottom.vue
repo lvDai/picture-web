@@ -52,6 +52,7 @@ export default {
     this.getAllCategory()
   },
   methods:{
+    // 获取所有分类
     getAllCategory(){
       this.$request.get("/getAllCategory").then((result) => {
         if(result.data.status == 1){
