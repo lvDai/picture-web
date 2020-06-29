@@ -35,7 +35,7 @@
             </el-menu-item-group>
           </router-link>
         </el-submenu>
-         <el-submenu index="4">
+        <el-submenu index="4">
           <template slot="title">
             <i class="el-icon-menu"></i>
             <span slot="title">分类管理</span>
@@ -43,6 +43,59 @@
           <router-link to="/admin/category">
             <el-menu-item-group>
               <el-menu-item index="4-1">查看分类</el-menu-item>
+            </el-menu-item-group>
+          </router-link>
+        </el-submenu>
+        <el-submenu index="5">
+          <template slot="title">
+            <i class="el-icon-s-management"></i>
+            <span slot="title">相簿管理</span>
+          </template>
+          <router-link to="/admin/addAlbum">
+            <el-menu-item-group>
+              <el-menu-item index="5-1">新增相簿</el-menu-item>
+            </el-menu-item-group>
+          </router-link>
+          <router-link to="/admin/publicAlbum">
+            <el-menu-item-group>
+              <el-menu-item index="5-2">查看相簿</el-menu-item>
+            </el-menu-item-group>
+          </router-link>
+        </el-submenu>
+         <el-submenu index="6">
+          <template slot="title">
+            <i class="el-icon-s-opportunity"></i>
+            <span slot="title">banner管理</span>
+          </template>
+          <router-link to="/admin/addBanner">
+            <el-menu-item-group>
+              <el-menu-item index="6-1">添加banner</el-menu-item>
+            </el-menu-item-group>
+          </router-link>
+           <router-link to="/admin/banner">
+            <el-menu-item-group>
+              <el-menu-item index="6-2">查看banner</el-menu-item>
+            </el-menu-item-group>
+          </router-link>
+        </el-submenu>
+                 <el-submenu index="7">
+          <template slot="title">
+            <i class="el-icon-s-data"></i>
+            <span slot="title">群组管理</span>
+          </template>
+          <router-link to="/admin/lookGroup">
+            <el-menu-item-group>
+              <el-menu-item index="7-1">查看群组</el-menu-item>
+            </el-menu-item-group>
+          </router-link>
+           <router-link to="/admin/addGroup">
+            <el-menu-item-group>
+              <el-menu-item index="7-2">添加群组</el-menu-item>
+            </el-menu-item-group>
+          </router-link>
+           <router-link to="/admin/addAlbumJoinGroup">
+            <el-menu-item-group>
+              <el-menu-item index="7-3">添加相簿到群组</el-menu-item>
             </el-menu-item-group>
           </router-link>
         </el-submenu>

@@ -5,14 +5,25 @@
       <div class="banner">
         <div class="slideshow">
           <ul>
-            <li v-for="(item) in slideshowData" :key="item.id">
-              <img :src="$imageURl+item.url" alt />
+            <li
+              v-for="(item,index) in slideshowData"
+              :class="(activityIndex == index)?'activity':''"
+              :key="item.bid"
+            >
+              <router-link to>
+                <img :src="$imageURl+item.url" alt />
+              </router-link>
             </li>
           </ul>
         </div>
         <div class="slideshowIndex" v-if="slideshowData.length > 1">
           <ul>
-            <li v-for="(item,index) in slideshowData" class="activity" :key="index"></li>
+            <li
+              v-for="(item,index) in slideshowData"
+              :class="(activityIndex == index)?'activity':''"
+              @mouseenter="mouseeSlide(index)"
+              :key="index"
+            ></li>
           </ul>
         </div>
         <div class="searchBox">
@@ -135,12 +146,31 @@ export default {
     return {
       slideshowData: [],
       switchoverRanking: 1,
+      activityIndex: 0,
       searchData: "",
       pictureData: { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [] },
       clickPictureId: 0
     };
   },
   methods: {
+    // 初始化轮播图
+    initSlideshow() {
+      setInterval(() => {
+        this.activityIndex == this.slideshowData.length - 1
+          ? (this.activityIndex = 0)
+          : ++this.activityIndex;
+      }, 4000);
+    },
+    // 鼠标移入小圆点上
+    mouseeSlide(index) {
+      if (
+        index != this.activityIndex &&
+        index < this.slideshowData.length &&
+        index >= 0
+      ) {
+        this.activityIndex = index;
+      }
+    },
     // 关闭图片详情页面
     closePages() {
       this.clickPictureId = 0;
@@ -200,6 +230,9 @@ export default {
         .then(result => {
           if (result.data.status == 1) {
             this.slideshowData = result.data.data;
+            if (this.slideshowData.length > 1) {
+              this.initSlideshow();
+            }
           } else {
             alert(result.data.error);
           }
@@ -229,12 +262,12 @@ export default {
     this.getAllBanner();
     this.getPopularityPicture(1, 24);
   },
-  watch:{
-    switchoverRanking(val){
-      if(val == 1){
-          this.getPopularityPicture(1, 24);
-      }else{
-        this.getNewRelease(1,24);
+  watch: {
+    switchoverRanking(val) {
+      if (val == 1) {
+        this.getPopularityPicture(1, 24);
+      } else {
+        this.getNewRelease(1, 24);
       }
     }
   },
@@ -261,11 +294,17 @@ export default {
           left: 0;
           height: 42.84vw;
           width: 100%;
+          opacity: 0;
+          transition: opacity 1s;
           img {
             width: 100%;
             height: 100%;
             box-sizing: border-box;
           }
+        }
+        li.activity {
+          opacity: 1;
+          z-index: 2;
         }
       }
     }
@@ -297,6 +336,7 @@ export default {
       position: absolute;
       top: 50%;
       left: 50%;
+      z-index: 9;
       transform: translate(-50%, 0);
       display: flex;
       input {
@@ -334,7 +374,7 @@ export default {
       width: 1000px;
       height: 80px;
       line-height: 80px;
-
+      z-index: 9;
       text-align: center;
       background-color: rgba(0, 0, 0, 0.4);
       h1 {

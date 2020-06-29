@@ -16,12 +16,12 @@
         <i class="iconfont" @click="searchContent">&#xe62f;</i>
       </div>
       <div class="headRight">
-        <div class="login" v-if="!user.id">
+        <div class="login" v-if="!user.uid">
           <router-link to="/login">{{$t('lang.login')}}</router-link>
         </div>
         <div class="alreadyLogin" v-else>
           <div class="user">
-            <span>{{user.name}}</span>
+            <span>{{user.username}}</span>
           </div>
           <div class="publishPicture">
             <router-link to="picture">{{$t('lang.publishPictures')}}</router-link>
@@ -49,7 +49,7 @@ export default {
     return {
       language: "中文",
       isLangList: false,
-      user: { name: "", id: "" },
+      user: { username: "", uid: "" },
       isSearchBox: false,
       searchData: ""
     };
@@ -69,7 +69,7 @@ export default {
     getUser() {
       if (localStorage.myUser) {
         let user = JSON.parse(this.$utility.uncompileStr(localStorage.myUser));
-        if (user && user.id) {
+        if (user && user.uid) {
           this.user = user;
         }
       }

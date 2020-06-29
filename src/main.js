@@ -9,12 +9,17 @@ import utility from './assets/js//utility'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import VueLazyLoad from 'vue-lazyload'
+import waterfall from 'vue-waterfall2'
+import VueCropper from 'vue-cropper'
 
 
-const imageURl = "http://192.168.31.17/"
+
+const imageURl = "http://127.0.0.1/"
 
 Vue.use(ElementUI);
 Vue.use(VueI18n);
+Vue.use(waterfall)
+Vue.use(VueCropper)
 
 Vue.use(VueLazyLoad, {
     error: imageURl + "timg.gif", //报错需要的图片

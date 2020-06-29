@@ -2,11 +2,14 @@
   <div class="userData">
     <div class="userBox">
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="id" label="id" width="180"></el-table-column>
-        <el-table-column prop="name" label="用户名" width="240"></el-table-column>
-        <el-table-column prop="jurisdiction" label="权限(1为普通用户,2为教师)" width="240"></el-table-column>
-        <el-table-column prop="status" label="状态(0为不正常1为正常)"></el-table-column>
-        <el-table-column label="操作" width="240">
+        <el-table-column prop="uid" label="id" width="180"></el-table-column>
+        <el-table-column prop="username" label="用户名" width="140"></el-table-column>
+        <el-table-column prop="email" label="邮箱" width="240"></el-table-column>
+        <el-table-column prop="cellphone" label="电话号码"></el-table-column>
+        <el-table-column prop="type" label="类型(0为普通用户,1为管理员)" width="240"></el-table-column>
+        <el-table-column prop="create_date" label="创建时间" width="240"></el-table-column>
+        <el-table-column prop="lastmodify_date" label="最后修改时间"></el-table-column>
+        <el-table-column label="操作" width="200">
           <template slot-scope="scope">
             <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
             <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>

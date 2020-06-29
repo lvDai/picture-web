@@ -2,7 +2,9 @@
   <div class="topNavig">
     <div class="navigBox W1200">
       <div class="logo">
-        <img :src="$imageURl+'cuhk-logo-zh.png'" alt />
+        <router-link to="/">
+          <img :src="$imageURl+'cuhk-logo-zh.png'" alt />
+        </router-link>
       </div>
       <div class="userData">
         <div class="userName">{{user.name}}</div>

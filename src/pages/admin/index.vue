@@ -36,21 +36,22 @@ export default {
     };
   },
   created() {
-    if (this.$utility.getCookie("adminUser")) {
-      let user = this.$utility.uncompileStr(
-        this.$utility.getCookie("adminUser")
-      );
-      if (user) {
-        this.user = JSON.parse(user)[0];
-        if (this.user.id) {
-          this.pageShow = true;
-          return;
-        }
-      }
-    }
-    this.$router.push({
-      path: "/admin/login"
-    });
+    this.pageShow = true;
+    // if (this.$utility.getCookie("adminUser")) {
+    //   let user = this.$utility.uncompileStr(
+    //     this.$utility.getCookie("adminUser")
+    //   );
+    //   if (user) {
+    //     this.user = JSON.parse(user)[0];
+    //     if (this.user.id) {
+    //       this.pageShow = true;
+    //       return;
+    //     }
+    //   }
+    // }
+    // this.$router.push({
+    //   path: "/admin/login"
+    // });
   },
   watch: {
     // 监听路由变化
